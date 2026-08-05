@@ -16,6 +16,8 @@ app.use(express.json());
 const PORT = process.env.PORT;
 const url = process.env.url;
 
+app.use("/auth",authRouter)
+
 mongoose
   .connect(url)
   .then((e) => console.log("Mongo DB connected"))
