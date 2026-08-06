@@ -1,37 +1,23 @@
-const mongoose = require("mongoose");
+const express = require("express");
+const router = express.Router();
+const validation = require("../Middlewares/checkValidation");
+const checkToken = require("../Middlewares/checkToken");
+const {
+  createProduct,
+  getAllProduct,
+  getProductById,
+  updateProduct,
+  deleteProduct,
+} = require("../Controllers/product");
+const {
+  productSchema,
+  updateProductSchema,
+} = require("../Middlewares/validationSchema");
 
-const userSchema = mongoose.Schema({
-  name: {
-    type: String,
-    minLength: 2,
-    maxLength: 30,
-    required: true,
-    trim: true,
-  },
-  email: {
-    type: String,
-    minLength: 11,
-    maxLength: 30,
-    required: true,
-    trim: true,
-    lowercase: true,
-    unique: true,
-    validate: {
-      validator: function (value) {
-        return value.endsWith("@gmail.com");
-      },
-      message: "Only Gmail addresses are allowed.",
-    },
-  },
-  password: {
-    type: String,
-    minLength: 8,
-    maxLength: 200,
-    required: true,
-    trim: true,
-  },
-});
+router.post("/", checkToken, validation(productSchema), createProduct);
+router.get("/", checkToken, getAllProduct);
+router.get("/:id", checkToken, getProductById);
+router.put("/:id", checkToken, validation(updateProductSchema), updateProduct);
+router.delete("/:id", checkToken, deleteProduct);
 
-const userModel = mongoose.model("user", userSchema);
-
-module.exports = userModel;
+module.exports = router;

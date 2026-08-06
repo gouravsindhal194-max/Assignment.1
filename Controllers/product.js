@@ -12,7 +12,7 @@ const createProduct = async (req, res) => {
     return res.json({ message: "all informations are required" });
   }
   try {
-    const product = createProductService({
+    const product = await createProductService({
       name,
       SKU,
       description,
@@ -29,7 +29,7 @@ const createProduct = async (req, res) => {
 
 const getAllProduct = async (req, res) => {
   try {
-    const allProduct = getAllProductService();
+    const allProduct = await getAllProductService();
     return res.status(200).json({ allProduct });
   } catch (error) {
     return res.status(500).json({ message: "not get any product", error });
@@ -39,7 +39,7 @@ const getAllProduct = async (req, res) => {
 const getProductById = async (req, res) => {
   let id = req.params.id;
   try {
-    const product = getProductByIdService(id);
+    const product = await getProductByIdService(id);
     return res.status(200).json({ product });
   } catch (error) {
     return res.status(500).json({ message: "Cannot get product" });
@@ -49,7 +49,7 @@ const getProductById = async (req, res) => {
 const updateProduct = async (req, res) => {
   let id = req.params.id;
   try {
-    const product = updateProductService(id, req.body);
+    const product = await updateProductService(id, req.body);
     return res.status(200).json({ message: "After update", product });
   } catch (error) {
     return res.status(500).json({ message: "Cannot update", error });
@@ -59,7 +59,7 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   let id = req.params.id;
   try {
-    let product = deleteProductService(id);
+    let product = await deleteProductService(id);
     return res.status(200).json({ message: "Deleted successfully", product });
   } catch (error) {
     return res.status(500).json({ message: "cannot delete", error });
